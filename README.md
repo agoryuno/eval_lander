@@ -24,14 +24,14 @@ an list of tuples, each containing a pair of values for the X and Y coordinates 
 at the start of each episode. Before passing the object to `evaluate_policy()` you need to call the object's `reinit()` method to reset
 the force vectors:
 
-  from eval_lander import EvalLander
-  
-  # Create an environment for 100 episodes
-  eval_env = EvalLander(100)
-  eval_env.reinit()
-  
-  # Pass eval_env.episodes_length as n_eval_episodes argument's value
-  mean_reward, std_reward = evaluate_policy(model, eval_env, 
-                                            n_eval_episodes=eval_env.episodes_length, 
-                                            deterministic=True)
-  print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
+    from eval_lander import EvalLander
+
+    # Create an environment for 100 episodes
+    eval_env = EvalLander(100)
+    eval_env.reinit()
+
+    # Pass eval_env.episodes_length as n_eval_episodes argument's value
+    mean_reward, std_reward = evaluate_policy(model, eval_env, 
+                                              n_eval_episodes=eval_env.episodes_length, 
+                                              deterministic=True)
+    print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
