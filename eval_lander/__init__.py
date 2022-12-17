@@ -41,9 +41,11 @@ class EvalLander(LunarLander):
         self._next_init = (i for i in self.__init_vals)
         super().__init__(*args, **kwargs)
 
+    def reinit(self):
+        self._next_init = (i for i in self.__init_vals)
+
     def next_init(self):
         for i in self._next_init:
-            print (i)
             return i
 
     def reset(self):
