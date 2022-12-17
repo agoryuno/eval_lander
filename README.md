@@ -14,8 +14,8 @@ makes direct comparisons between models very difficult. Since each run of `evalu
 a very large sample or a very large number of smaller samples to get an idea of how two different models perform. This is especially true for models
 which are close in performance, because for such pairs of models even small differences in distributions of results matter greatly.
 
-The modified class `EvalLander` allows you to feed a stable set of initial conditions through a model as many time as required, to compare as many models
-as needed, returning results which are determined by the model's own performance and differences in landscape.
+The modified class `EvalLander` allows you to feed a stable set of initial conditions through a model as many times as required, to compare as many models
+as needed, returning results which are determined only by the model's own performance and differences in landscape holding other initial conditions constant.
 
 ## Using the module
 
