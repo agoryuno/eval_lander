@@ -43,6 +43,7 @@ class EvalLander(LunarLander):
 
     def next_init(self):
         for i in self._next_init:
+            print (i)
             return i
 
     def reset(self):
