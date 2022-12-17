@@ -39,6 +39,7 @@ class EvalLander(LunarLander):
                 for i in range(init_vals)]
 
         self._next_init = (i for i in self.__init_vals)
+        self.episodes_length = len(self.__init_vals)
         super().__init__(*args, **kwargs)
 
     def reinit(self):
