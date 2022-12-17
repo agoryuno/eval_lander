@@ -38,7 +38,7 @@ class EvalLander(LunarLander):
                  np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM))
                 for i in range(init_vals)]
 
-        self._next_init = (i for i in init_vals)
+        self._next_init = (i for i in self.__init_vals)
         super().__init__(*args, **kwargs)
 
     def next_init(self):
