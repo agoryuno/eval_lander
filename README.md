@@ -1,16 +1,16 @@
 # eval_lander
 
-This provides the EvalLander class, which inherits from SB3's standard LunarLander while overriding its reset() method.
+This provides the `EvalLander` class, which inherits from SB3's standard `LunarLander` while overriding its `reset()` method.
 
-The purpose of this is to facilitate direct comparisons between LunarLander models by evaluating them with a stable set of initial conditions.
+The purpose of this is to facilitate direct comparisons between `LunarLander` models by evaluating them with a stable set of initial conditions.
 Needed to note that by "initital conditions" we mean only the starting position, rotation, and momentum of the lander - differences in landscapes
 are not affected.
 
-The standard LunarLander class objects reset to random initial conditions. That means that SB3's evaluate_policy() function essentially 
+The standard `LunarLander` class objects reset to random initial conditions. That means that SB3's `evaluate_policy()` function essentially 
 feeds white noise through the evaluated model and produces significantly different mean and std of rewards on subsequent evaluation runs.
 
 While the default behavior is true to the purpose of training a model to optimize reward in the space of random initial conditions, it 
-makes direct comparisons between models very difficult. Since each run of evaluate_policy() produces a random sample of results, you would need either
+makes direct comparisons between models very difficult. Since each run of `evaluate_policy()` produces a random sample of results, you would need either
 a very large sample or a very large number of smaller samples to get an idea of how two different models perform. This is especially true for models
 which are close in performance, because for such pairs of models even small differences in distributions of results matter greatly.
 
