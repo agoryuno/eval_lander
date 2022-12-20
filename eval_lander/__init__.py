@@ -71,6 +71,8 @@ class EvalLander(LunarLander):
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(low, high)
 
+        print(self.observation_space)
+
         super().__init__(*args, **kwargs)
 
         print (self.observation_space)
