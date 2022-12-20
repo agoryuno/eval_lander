@@ -94,6 +94,8 @@ class EvalLander(LunarLander):
         self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
         self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
         self.helipad_y = H / 4
+        if height[CHUNKS // 2 - 2] is None:
+            print (self.__heights)
         height[CHUNKS // 2 - 2] = self.helipad_y
         height[CHUNKS // 2 - 1] = self.helipad_y
         height[CHUNKS // 2 + 0] = self.helipad_y
