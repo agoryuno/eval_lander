@@ -1,21 +1,31 @@
 # eval_lander
 
-This provides the `EvalLander` class, which inherits from SB3's standard `LunarLander` while overriding its `reset()` method.
+This provides the `EvalLander` class, which inherits from SB3's standard `LunarLander` while overriding its `reset()` 
+method.
 
-The purpose of this is to facilitate direct comparisons between `LunarLander` models by evaluating them with a stable set of initial conditions.
-Needed to note that by "initital conditions" we mean only the starting position, rotation, and momentum of the lander - differences in landscapes
-are not affected.
+The purpose of this is to facilitate direct comparisons between `LunarLander` models by evaluating them with a stable 
+set of initial conditions.
 
-The standard `LunarLander` class objects reset to random initial conditions. That means that SB3's `evaluate_policy()` function essentially 
-feeds white noise through the evaluated model and produces significantly different mean and std of rewards on subsequent evaluation runs.
+The standard `LunarLander` class objects reset to random initial conditions. That means that SB3's `evaluate_policy()` 
+function essentially feeds white noise through the evaluated model and produces significantly different mean and std 
+of rewards on subsequent evaluation runs.
 
-While the default behavior is true to the purpose of training a model to optimize reward in the space of random initial conditions, it 
-makes direct comparisons between models very difficult. Since each run of `evaluate_policy()` produces a random sample of results, you would need either
-a very large sample or a very large number of smaller samples to get an idea of how two different models perform. This is especially true for models
-which are close in performance, because for such pairs of models even small differences in distributions of results matter greatly.
+While the default behavior is true to the purpose of training a model to optimize reward in the space of random 
+initial conditions, it makes direct comparisons between models very difficult. Since each run of `evaluate_policy()` 
+produces a random sample of results, you would need either a very large sample or a very large number of smaller 
+samples to get an idea of how two different models perform. This is especially true for models which are close in 
+performance, because for such pairs of models even small differences in distributions of results matter greatly.
 
-The modified class `EvalLander` allows you to feed a stable set of initial conditions through a model as many times as required, to compare as many models
-as needed, returning results which are determined only by the model's own performance and differences in landscape holding other initial conditions constant.
+The modified class `EvalLander` allows you to feed a stable set of initial conditions through a model as many times 
+as required, to compare as many models as needed, returning results which are determined only by the model's own 
+performance (and possibly differences in landscape, see next paragraph) holding initial conditions constant.
+
+**NOTE:** By default, `EvalLander` environment uses randomized terrains in each episode. To stabilize
+terrain between subsequent evaluations, pass `stabilize_terrain=True` to the constructor:
+
+    ```python
+    env = EvalLander(50, stabilize_terrain=True)
+    ```
 
 ## Using the module
 
