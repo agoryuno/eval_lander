@@ -34,7 +34,6 @@ class EvalLander(LunarLander):
                  init_heights: Union[bool, Union[List, Tuple]] = False,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print(self.observation_space)
         low = np.array(
             [
                 # these are bounds for position
@@ -70,8 +69,6 @@ class EvalLander(LunarLander):
 
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(low, high)
-
-        print (self.observation_space)
 
         self.__init_vals = [init_vals]
         if isinstance(init_vals, int):
