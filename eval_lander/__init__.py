@@ -1,4 +1,4 @@
-from typing import Union, List, Tuple
+from typing import Union, List, Tuple, Optional
 import numpy as np
 
 from Box2D.b2 import (
@@ -26,7 +26,6 @@ from gym.envs.box2d.lunar_lander import (
 )
 
 from stable_baselines3.common.evaluation import evaluate_policy
-
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Union[int, Union[List, Tuple]],
@@ -44,11 +43,12 @@ class EvalLander(LunarLander):
         self.episodes_length = len(self.__init_vals)
         super().__init__(*args, **kwargs)
 
-        self.__heights = None
+        self.__heights = []
         if self.stabilize_terrain:
             CHUNKS = 11
             H = VIEWPORT_H / SCALE
-            self.__heights = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
+            self.__heights.append(self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,)))
+            self._next_heights = (i for i in self.__heights)
 
     @property
     def heights(self):
@@ -56,12 +56,22 @@ class EvalLander(LunarLander):
 
     def reinit(self):
         self._next_init = (i for i in self.__init_vals)
+        if self.stabilize_terrain:
+            self._next_heights = (i for i in self.__heights)
 
     def next_init(self):
         for i in self._next_init:
             return i
 
-    def reset(self):
+    def next_heights(self):
+        for i in self._next_heights:
+            return i
+
+    def reset(self,
+              *,
+              seed: Optional[int] = None,
+              options: Optional[dict] = None
+              ):
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
@@ -73,9 +83,12 @@ class EvalLander(LunarLander):
 
         # terrain
         CHUNKS = 11
-        height = self.__heights
-        if not self.stabilize_terrain:
+
+        if self.stabilize_terrain:
+            height = self.next_heights()
+        else:
             height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
+
         chunk_x = [W / (CHUNKS - 1) * i for i in range(CHUNKS)]
         self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
         self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
