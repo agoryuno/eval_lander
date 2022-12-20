@@ -29,9 +29,12 @@ from stable_baselines3.common.evaluation import evaluate_policy
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Union[int, Union[List, Tuple]],
-                 stabilize_terrain: bool = False,
+                 init_heights: Optional[Union[List, Tuple]] = None,
                  *args, **kwargs):
-        self.stabilize_terrain = stabilize_terrain
+
+        if init_heights is not None:
+            assert len(init_heights) == len(init_vals)
+        self.stabilize_terrain = init_heights is not None
         self.__init_vals = init_vals
         if isinstance(init_vals, int):
             self.__init_vals = [
@@ -48,8 +51,10 @@ class EvalLander(LunarLander):
         if self.stabilize_terrain:
             CHUNKS = 11
             H = VIEWPORT_H / SCALE
-            self.__heights = [self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
-                              for i in range(init_vals)]
+            self.__heights = init_heights
+            if not init_heights:
+                self.__heights = [self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
+                                  for i in range(init_vals)]
         self._next_heights = (i for i in self.__heights)
 
     @property
