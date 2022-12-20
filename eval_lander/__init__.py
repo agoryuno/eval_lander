@@ -48,7 +48,7 @@ class EvalLander(LunarLander):
 
         self.__heights = []
         if init_heights:
-            self.__heights = init_heights
+            self.__heights = [init_heights]
             if isinstance(init_heights, bool):
                 self.__heights = self._make_heights(len(self.__init_vals))
             self.stabilize_terrain = True
