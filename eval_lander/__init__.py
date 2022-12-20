@@ -47,7 +47,7 @@ class EvalLander(LunarLander):
         super().__init__(*args, **kwargs)
 
         self.__heights = []
-        if init_heights:
+        if init_heights is not None:
             self.__heights = [init_heights]
             if isinstance(init_heights, bool):
                 self.__heights = self._make_heights(len(self.__init_vals))
