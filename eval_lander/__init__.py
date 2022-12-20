@@ -1,3 +1,4 @@
+import math
 from typing import Union, List, Tuple, Optional
 import numpy as np
 
@@ -10,6 +11,7 @@ from Box2D.b2 import (
     contactListener,
 )
 
+from gym import spaces
 from gym.envs.box2d import LunarLander
 from gym.envs.box2d.lunar_lander import (
     ContactDetector,
