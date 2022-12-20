@@ -73,6 +73,8 @@ class EvalLander(LunarLander):
 
         super().__init__(*args, **kwargs)
 
+        print (self.observation_space)
+
         self.__init_vals = [init_vals]
         if isinstance(init_vals, int):
             self.__init_vals = [
