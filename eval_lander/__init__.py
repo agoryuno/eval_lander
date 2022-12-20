@@ -65,8 +65,8 @@ class EvalLander(LunarLander):
             return i
 
     def next_heights(self):
-        for i in self._next_heights:
-            return i
+        for i, height in enumerate(self._next_heights):
+            return i, height
 
     def reset(self,
               *,
@@ -86,7 +86,9 @@ class EvalLander(LunarLander):
         CHUNKS = 11
 
         if self.stabilize_terrain:
-            height = self.next_heights()
+            i, height = self.next_heights()
+            if height is None:
+                print(i, self.__heights[i])
         else:
             height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
 
@@ -94,8 +96,6 @@ class EvalLander(LunarLander):
         self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
         self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
         self.helipad_y = H / 4
-        if height[CHUNKS // 2 - 2] is None:
-            print (self.__heights)
         height[CHUNKS // 2 - 2] = self.helipad_y
         height[CHUNKS // 2 - 1] = self.helipad_y
         height[CHUNKS // 2 + 0] = self.helipad_y
