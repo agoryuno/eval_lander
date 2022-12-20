@@ -50,8 +50,11 @@ class EvalLander(LunarLander):
             H = VIEWPORT_H / SCALE
             self.__heights = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
 
+    @property
+    def heights(self):
+        return self.__heights
 
-    def reinit(self):
+        def reinit(self):
         self._next_init = (i for i in self.__init_vals)
 
     def next_init(self):
