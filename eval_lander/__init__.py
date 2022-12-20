@@ -27,14 +27,14 @@ from gym.envs.box2d.lunar_lander import (
     INITIAL_RANDOM
 )
 
-from stable_baselines3.common.evaluation import evaluate_policy
 
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Union[int, Union[List, Tuple]],
                  init_heights: Union[bool, Union[List, Tuple]] = False,
                  *args, **kwargs):
-
+        super().__init__(*args, **kwargs)
+        print(self.observation_space)
         low = np.array(
             [
                 # these are bounds for position
@@ -70,10 +70,6 @@ class EvalLander(LunarLander):
 
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(low, high)
-
-        print(self.observation_space)
-
-        super().__init__(*args, **kwargs)
 
         print (self.observation_space)
 
