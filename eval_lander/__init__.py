@@ -90,7 +90,7 @@ class EvalLander(LunarLander):
         if self.stabilize_terrain:
             res = self.next_heights()
             if res is None:
-                print(last_i)
+                print(self.last_i)
             i, height = res
             self.last_i = i
         else:
