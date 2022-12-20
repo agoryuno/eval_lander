@@ -54,7 +54,7 @@ class EvalLander(LunarLander):
     def heights(self):
         return self.__heights
 
-        def reinit(self):
+    def reinit(self):
         self._next_init = (i for i in self.__init_vals)
 
     def next_init(self):
