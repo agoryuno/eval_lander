@@ -35,19 +35,6 @@ class EvalLander(LunarLander):
                  init_heights: Union[bool, Union[List, Tuple]] = False,
                  *args, **kwargs):
 
-        self.__init_vals = [init_vals]
-        if isinstance(init_vals, int):
-            self.__init_vals = [
-                (np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
-                 np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM))
-                for i in range(init_vals)]
-
-
-
-        self._next_init = (i for i in self.__init_vals)
-        self.episodes_length = len(self.__init_vals)
-        self.episodes_num = self.episodes_length-1
-
         low = np.array(
             [
                 # these are bounds for position
@@ -85,6 +72,17 @@ class EvalLander(LunarLander):
         self.observation_space = spaces.Box(low, high)
 
         super().__init__(*args, **kwargs)
+
+        self.__init_vals = [init_vals]
+        if isinstance(init_vals, int):
+            self.__init_vals = [
+                (np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
+                 np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM))
+                for i in range(init_vals)]
+
+        self._next_init = (i for i in self.__init_vals)
+        self.episodes_length = len(self.__init_vals)
+        self.episodes_num = self.episodes_length - 1
 
         self.__heights = []
         if init_heights is not None:
