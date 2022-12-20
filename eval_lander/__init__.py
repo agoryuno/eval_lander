@@ -32,7 +32,7 @@ class EvalLander(LunarLander):
                  init_heights: Union[bool, Union[List, Tuple]] = False,
                  *args, **kwargs):
 
-        self.__init_vals = init_vals
+        self.__init_vals = [init_vals]
         if isinstance(init_vals, int):
             self.__init_vals = [
                 (np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
