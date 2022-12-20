@@ -91,6 +91,7 @@ class EvalLander(LunarLander):
             res = self.next_heights()
             if res is None:
                 print(self.last_i)
+                res = (self.last_i + 1, self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,)))
             i, height = res
             self.last_i = i
         else:
