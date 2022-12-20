@@ -47,7 +47,8 @@ class EvalLander(LunarLander):
         if self.stabilize_terrain:
             CHUNKS = 11
             H = VIEWPORT_H / SCALE
-            self.__heights.append(self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,)))
+            for i in range(self.episodes_length):
+                self.__heights.append(self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,)))
             self._next_heights = (i for i in self.__heights)
 
     @property
