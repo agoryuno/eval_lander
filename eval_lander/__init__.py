@@ -26,6 +26,7 @@ from gym.envs.box2d.lunar_lander import (
 )
 
 from stable_baselines3.common.evaluation import evaluate_policy
+
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Union[int, Union[List, Tuple]],
@@ -44,6 +45,43 @@ class EvalLander(LunarLander):
         self._next_init = (i for i in self.__init_vals)
         self.episodes_length = len(self.__init_vals)
         self.episodes_num = self.episodes_length-1
+
+        low = np.array(
+            [
+                # these are bounds for position
+                # realistically the environment should have ended
+                # long before we reach more than 50% outside
+                -1.5,
+                -1.5,
+                # velocity bounds is 5x rated speed
+                -5.0,
+                -5.0,
+                -math.pi,
+                -5.0,
+                -0.0,
+                -0.0,
+            ]
+        ).astype(np.float32)
+        high = np.array(
+            [
+                # these are bounds for position
+                # realistically the environment should have ended
+                # long before we reach more than 50% outside
+                1.5,
+                1.5,
+                # velocity bounds is 5x rated speed
+                5.0,
+                5.0,
+                math.pi,
+                5.0,
+                1.0,
+                1.0,
+            ]
+        ).astype(np.float32)
+
+        # useful range is -1 .. +1, but spikes can be higher
+        self.observation_space = spaces.Box(low, high)
+
         super().__init__(*args, **kwargs)
 
         self.__heights = []
