@@ -50,12 +50,14 @@ class EvalLander(LunarLander):
             self.__heights = [(i, self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,)))
                               for i in range(init_vals)]
         self._next_heights = (i for i in self.__heights)
+        self.last_i = 0
 
     @property
     def heights(self):
         return self.__heights
 
     def reinit(self):
+        self.last_i = 0
         self._next_init = (i for i in self.__init_vals)
         if self.stabilize_terrain:
             self._next_heights = (i for i in self.__heights)
@@ -85,13 +87,12 @@ class EvalLander(LunarLander):
         # terrain
         CHUNKS = 11
 
-        last_i = 0
         if self.stabilize_terrain:
             res = self.next_heights()
             if res is None:
                 print(last_i)
             i, height = res
-            last_i = i
+            self.last_i = i
         else:
             height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
 
