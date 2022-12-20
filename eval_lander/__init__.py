@@ -29,15 +29,11 @@ from stable_baselines3.common.evaluation import evaluate_policy
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Union[int, Union[List, Tuple]],
-                 init_heights: Union[bool, Union[List, Tuple]] = False,
+                 init_heights: Optional[Union[List, Tuple]],
                  *args, **kwargs):
 
-        if init_heights:
-            if isinstance(init_heights, (list, tuple)):
-                self.__heights = init_heights
 
 
-        self.stabilize_terrain = init_heights is not None
         self.__init_vals = init_vals
         if isinstance(init_vals, int):
             self.__init_vals = [
@@ -52,14 +48,16 @@ class EvalLander(LunarLander):
         self.episodes_num = self.episodes_length-1
         super().__init__(*args, **kwargs)
 
-        self.__heights = []
-        if self.stabilize_terrain:
+
+        if init_heights:
+            self.__heights = init_heights
+            self.stabilize_terrain = True
+        else:
             CHUNKS = 11
             H = VIEWPORT_H / SCALE
-            self.__heights = init_heights
-            if not init_heights:
-                self.__heights = [self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
-                                  for i in range(init_vals)]
+            self.__heights = [self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
+                              for i in range(init_vals)]
+
         self._next_heights = (i for i in self.__heights)
 
     @property
@@ -96,11 +94,7 @@ class EvalLander(LunarLander):
         # terrain
         CHUNKS = 11
 
-        if self.stabilize_terrain:
-            height = self.next_heights()
-        else:
-            height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
-
+        height = self.next_heights()
         chunk_x = [W / (CHUNKS - 1) * i for i in range(CHUNKS)]
         self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
         self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
