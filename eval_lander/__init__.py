@@ -287,11 +287,10 @@ class EvalLander(LunarLander):
             self._next_heights = (i for i in self.__heights)
 
     def next_init(self):
-        if self.stabilize_forces:
-            for i in self._next_init:
-                return i
-        else:
+        if not self.stabilize_forces:
             return self._make_force()
+        for i in self._next_init:
+            return i
 
     def next_heights(self):
         if not self.stabilize_terrain:
