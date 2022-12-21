@@ -303,6 +303,7 @@ class EvalLander(LunarLander):
               seed: Optional[int] = None,
               options: Optional[dict] = None
               ):
+        print (seed)
         super(LunarLander, self).reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
