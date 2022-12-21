@@ -31,9 +31,10 @@ from gym.envs.box2d.lunar_lander import (
 class FTLander(LunarLander):
 
     def __init__(self, x: float, y: float, margin: float = 0.05,
+                 render_mode: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print (self.render_mode)
+        self.render_mode = render_mode
         self.__x = x
         self.__y = y
         self.__margin = margin
