@@ -78,6 +78,8 @@ class EvalLander(LunarLander):
 
         self.__init_vals = init_vals
         self.stabilize_forces = False
+        self.episodes_length = None
+
         if self.__init_vals is not None:
             self.stabilize_forces = True
             if isinstance(init_vals, int):
