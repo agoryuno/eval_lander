@@ -31,8 +31,12 @@ from gym.envs.box2d.lunar_lander import (
 class EvalLander(LunarLander):
 
     def __init__(self, init_vals: Optional[Union[int, Iterable[Tuple[float, float]]]] = None,
-                 init_heights: Union[bool, Iterable[np.ndarray]] = False,
+                 init_heights: Union[bool, int, Iterable[np.ndarray]] = False,
                  *args, **kwargs):
+        if init_vals is None:
+            assert isinstance(init_heights, int) or not init_heights, \
+                "init_heights must be an int or False if init_vals is None"
+
         super().__init__(*args, **kwargs)
         low = np.array(
             [
@@ -86,6 +90,10 @@ class EvalLander(LunarLander):
             self.episodes_length = len(self.__init_vals)
             self.episodes_num = self.episodes_length - 1
 
+        if not self.episodes_length:
+            if isinstance(init_heights, int):
+                self.episodes_length = init_heights
+                self.episodes_num = self.episodes_length - 1
         self.__heights = []
         if init_heights is not None:
             self.__heights = init_heights
