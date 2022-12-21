@@ -74,7 +74,7 @@ class FTLander(LunarLander):
 
     def next_init(self):
         return (np.random.uniform(self.__x*(1-self.__margin), self.__x*(1+self.__margin)),
-                np.random.uniform(self.__y*(1-self.__margin), self.__y*(1+self.__margin))
+                np.random.uniform(self.__y*(1-self.__margin), self.__y*(1+self.__margin)))
 
     def reset(
         self,
