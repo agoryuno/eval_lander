@@ -33,12 +33,12 @@ class FTLander(LunarLander):
     def __init__(self, x: float, y: float, margin: float = 0.05,
                  render_mode: Optional[str] = None,
                  *args, **kwargs):
+        print (super().__init__)
         super().__init__(*args, **kwargs)
         self.render_mode = render_mode
         self.__x = x
         self.__y = y
         self.__margin = margin
-        print(self.__x, self.__y, self.__margin)
 
         low = np.array(
             [
