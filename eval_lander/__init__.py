@@ -31,49 +31,11 @@ from gym.envs.box2d.lunar_lander import (
 class FTLander(LunarLander):
 
     def __init__(self, x: float, y: float, margin: float = 0.05,
-                 render_mode: Optional[str] = None,
                  *args, **kwargs):
-        print (super().__init__)
         super().__init__(*args, **kwargs)
-        self.render_mode = render_mode
         self.__x = x
         self.__y = y
         self.__margin = margin
-
-        low = np.array(
-            [
-                # these are bounds for position
-                # realistically the environment should have ended
-                # long before we reach more than 50% outside
-                -1.5,
-                -1.5,
-                # velocity bounds is 5x rated speed
-                -5.0,
-                -5.0,
-                -math.pi,
-                -5.0,
-                -0.0,
-                -0.0,
-            ]
-        ).astype(np.float32)
-        high = np.array(
-            [
-                # these are bounds for position
-                # realistically the environment should have ended
-                # long before we reach more than 50% outside
-                1.5,
-                1.5,
-                # velocity bounds is 5x rated speed
-                5.0,
-                5.0,
-                math.pi,
-                5.0,
-                1.0,
-                1.0,
-            ]
-        ).astype(np.float32)
-
-        self.observation_space = spaces.Box(low, high)
 
     def next_init(self):
         return (np.random.uniform(self.__x*(1-self.__margin), self.__x*(1+self.__margin)),
