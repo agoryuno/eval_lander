@@ -1,5 +1,5 @@
 import math
-from typing import Union, List, Tuple, Optional
+from typing import Union, List, Tuple, Optional, Iterable
 import numpy as np
 
 from Box2D.b2 import (
@@ -30,8 +30,8 @@ from gym.envs.box2d.lunar_lander import (
 
 class EvalLander(LunarLander):
 
-    def __init__(self, init_vals: Union[int, Union[List, Tuple]],
-                 init_heights: Union[bool, Union[List, Tuple]] = False,
+    def __init__(self, init_vals: Optional[Union[int, Iterable[Tuple[float, float]]]] = None,
+                 init_heights: Union[bool, Iterable[np.ndarray]] = False,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         low = np.array(
@@ -70,16 +70,21 @@ class EvalLander(LunarLander):
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(low, high)
 
-        self.__init_vals = init_vals
-        if isinstance(init_vals, int):
-            self.__init_vals = [
-                (np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
-                 np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM))
-                for i in range(init_vals)]
+        self.__initial_random = INITIAL_RANDOM
 
-        self._next_init = (i for i in self.__init_vals)
-        self.episodes_length = len(self.__init_vals)
-        self.episodes_num = self.episodes_length - 1
+        self.__init_vals = init_vals
+        self.stabilize_forces = False
+        if self.__init_vals is not None:
+            self.stabilize_forces = True
+            if isinstance(init_vals, int):
+                self.__init_vals = [
+                    (np.random.uniform(-self.__initial_random, self.__initial_random),
+                     np.random.uniform(-self.__initial_random, self.__initial_random))
+                    for i in range(init_vals)]
+
+            self._next_init = (i for i in self.__init_vals)
+            self.episodes_length = len(self.__init_vals)
+            self.episodes_num = self.episodes_length - 1
 
         self.__heights = []
         if init_heights is not None:
@@ -90,6 +95,10 @@ class EvalLander(LunarLander):
             assert len(self.__heights) == len(self.__init_vals)
 
         self._next_heights = (i for i in self.__heights)
+
+    def _make_force(self):
+        return (self.np_random.uniform(-self.__initial_random, self.__initial_random),
+                self.np_random.uniform(-self.__initial_random, self.__initial_random))
 
     def _make_height(self):
         CHUNKS = 11
@@ -104,13 +113,16 @@ class EvalLander(LunarLander):
         return self.__heights
 
     def reinit(self):
-        self._next_init = (i for i in self.__init_vals)
+        if self.stabilize_forces:
+            self._next_init = (i for i in self.__init_vals)
         if self.stabilize_terrain:
             self._next_heights = (i for i in self.__heights)
 
     def next_init(self):
-        for i in self._next_init:
-            return i
+        if self.stabilize_forces:
+            for i in self._next_init:
+                return i
+        return self._make_force()
 
     def next_heights(self):
         if not self.stabilize_terrain:
@@ -182,10 +194,6 @@ class EvalLander(LunarLander):
         self.lander.color2 = (0.3, 0.3, 0.5)
         self.lander.ApplyForceToCenter(
             self.next_init(),
-            #(
-                #self.np_random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
-                #self.np_random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
-            #),
             True,
         )
 
