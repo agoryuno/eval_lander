@@ -337,6 +337,4 @@ class EvalLander(LunarLander):
 
         if self.render_mode == "human":
             self.render()
-        res = self.step(np.array([0, 0]) if self.continuous else 0)[0]
-        print(res)
-        return res
+        return self.step(np.array([0, 0]) if self.continuous else 0)[0], {}
