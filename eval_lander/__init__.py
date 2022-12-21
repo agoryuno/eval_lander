@@ -74,7 +74,7 @@ class FTLander(LunarLander):
 
     def next_init(self):
         return (np.random.uniform(self.__x*(1-self.__margin), self.__x*(1+self.__margin)),
-                np.random.uniform(self.__y*(1-self.__margin), self.__y*(1+self.__margin)))
+                np.random.uniform(self.__y*(1-self.__margin), self.__y*(1+self.__margin)),)
 
     def reset(
         self,
@@ -82,7 +82,6 @@ class FTLander(LunarLander):
         seed: Optional[int] = None,
         options: Optional[dict] = None,
     ):
-        super(LunarLander, self).reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
