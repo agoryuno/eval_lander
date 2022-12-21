@@ -97,10 +97,10 @@ class EvalLander(LunarLander):
                 self.episodes_length = init_heights
                 self.episodes_num = self.episodes_length - 1
         self.__heights = []
-        if init_heights is not None:
+        if init_heights:
             self.__heights = init_heights
             if isinstance(init_heights, bool):
-                self.__heights = self._make_heights(len(self.__init_vals))
+                self.__heights = self._make_heights(self.episodes_length)
             self.stabilize_terrain = True
             assert len(self.__heights) == len(self.__init_vals)
 
