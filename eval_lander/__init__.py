@@ -47,6 +47,7 @@ class FTLander(LunarLander):
         seed: Optional[int] = None,
         options: Optional[dict] = None,
     ):
+        super(LunarLander, self).reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
@@ -161,41 +162,6 @@ class EvalLander(LunarLander):
                 "init_heights must be an int or False if init_vals is None"
 
         super().__init__(*args, **kwargs)
-        low = np.array(
-            [
-                # these are bounds for position
-                # realistically the environment should have ended
-                # long before we reach more than 50% outside
-                -1.5,
-                -1.5,
-                # velocity bounds is 5x rated speed
-                -5.0,
-                -5.0,
-                -math.pi,
-                -5.0,
-                -0.0,
-                -0.0,
-            ]
-        ).astype(np.float32)
-        high = np.array(
-            [
-                # these are bounds for position
-                # realistically the environment should have ended
-                # long before we reach more than 50% outside
-                1.5,
-                1.5,
-                # velocity bounds is 5x rated speed
-                5.0,
-                5.0,
-                math.pi,
-                5.0,
-                1.0,
-                1.0,
-            ]
-        ).astype(np.float32)
-
-        # useful range is -1 .. +1, but spikes can be higher
-        self.observation_space = spaces.Box(low, high)
 
         self.__initial_random = INITIAL_RANDOM
 
@@ -267,6 +233,7 @@ class EvalLander(LunarLander):
               seed: Optional[int] = None,
               options: Optional[dict] = None
               ):
+        super(LunarLander, self).reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
