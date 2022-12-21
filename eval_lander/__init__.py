@@ -30,7 +30,7 @@ from gym.envs.box2d.lunar_lander import (
 
 class FTLander(LunarLander):
 
-    def __init__(self, x: float, y: float, margin: float):
+    def __init__(self, x: float, y: float, margin: float = 0.05):
         super().__init__()
         self.__x = x
         self.__y = y
@@ -81,7 +81,6 @@ class FTLander(LunarLander):
         seed: Optional[int] = None,
         options: Optional[dict] = None,
     ):
-        super().reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
