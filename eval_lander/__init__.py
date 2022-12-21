@@ -70,7 +70,7 @@ class EvalLander(LunarLander):
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(low, high)
 
-        self.__init_vals = [init_vals]
+        self.__init_vals = init_vals
         if isinstance(init_vals, int):
             self.__init_vals = [
                 (np.random.uniform(-INITIAL_RANDOM, INITIAL_RANDOM),
@@ -83,7 +83,7 @@ class EvalLander(LunarLander):
 
         self.__heights = []
         if init_heights is not None:
-            self.__heights = [init_heights]
+            self.__heights = init_heights
             if isinstance(init_heights, bool):
                 self.__heights = self._make_heights(len(self.__init_vals))
             self.stabilize_terrain = True
