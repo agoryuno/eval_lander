@@ -30,8 +30,9 @@ from gym.envs.box2d.lunar_lander import (
 
 class FTLander(LunarLander):
 
-    def __init__(self, x: float, y: float, margin: float = 0.05):
-        super().__init__()
+    def __init__(self, x: float, y: float, margin: float = 0.05,
+                 *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.__x = x
         self.__y = y
         self.__margin = margin
@@ -181,8 +182,6 @@ class FTLander(LunarLander):
 
         self.drawlist = [self.lander] + self.legs
 
-        if self.render_mode == "human":
-            self.render()
         return self.step(np.array([0, 0]) if self.continuous else 0)[0], {}
 
 
