@@ -38,6 +38,7 @@ class FTLander(LunarLander):
         self.__x = x
         self.__y = y
         self.__margin = margin
+        print(self.__x, self.__y, self.__margin)
 
         low = np.array(
             [
