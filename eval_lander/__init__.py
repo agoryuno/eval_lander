@@ -82,6 +82,7 @@ class FTLander(LunarLander):
         seed: Optional[int] = None,
         options: Optional[dict] = None,
     ):
+        super().reset(seed=seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
         self.world.contactListener = self.world.contactListener_keepref
@@ -181,7 +182,8 @@ class FTLander(LunarLander):
             self.legs.append(leg)
 
         self.drawlist = [self.lander] + self.legs
-
+        if self.render_mode == "human":
+            self.render()
         return self.step(np.array([0, 0]) if self.continuous else 0)[0], {}
 
 
