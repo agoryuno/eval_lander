@@ -290,7 +290,8 @@ class EvalLander(LunarLander):
         if self.stabilize_forces:
             for i in self._next_init:
                 return i
-        return self._make_force()
+        else:
+            return self._make_force()
 
     def next_heights(self):
         if not self.stabilize_terrain:
