@@ -28,6 +28,14 @@ from gym.envs.box2d.lunar_lander import (
 )
 
 
+W = VIEWPORT_W / SCALE
+H = VIEWPORT_H / SCALE
+CHUNKS = 11
+CHUNK_X = [W / (CHUNKS - 1) * i for i in range(CHUNKS)]
+HELIPAD_X1 = CHUNK_X[CHUNKS // 2 - 1]
+HELIPAD_X2 = CHUNK_X[CHUNKS // 2 + 1]
+HELIPAD_Y = H / 4
+
 class FTLander(LunarLander):
 
     def __init__(self, x: float, y: float, margin: float = 5.,
@@ -36,6 +44,8 @@ class FTLander(LunarLander):
         self.__x = x
         self.__y = y
         self.__margin = margin
+
+
 
     def next_init(self):
         return (np.random.uniform(self.__x-self.__margin, self.__x+self.__margin),
@@ -54,16 +64,13 @@ class FTLander(LunarLander):
         self.game_over = False
         self.prev_shaping = None
 
-        W = VIEWPORT_W / SCALE
-        H = VIEWPORT_H / SCALE
-
         # terrain
-        CHUNKS = 11
+
         height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
-        chunk_x = [W / (CHUNKS - 1) * i for i in range(CHUNKS)]
-        self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
-        self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
-        self.helipad_y = H / 4
+
+        self.helipad_x1 = HELIPAD_X1
+        self.helipad_x2 = HELIPAD_X2
+        self.helipad_y = HELIPAD_Y
         height[CHUNKS // 2 - 2] = self.helipad_y
         height[CHUNKS // 2 - 1] = self.helipad_y
         height[CHUNKS // 2 + 0] = self.helipad_y
@@ -79,8 +86,8 @@ class FTLander(LunarLander):
         )
         self.sky_polys = []
         for i in range(CHUNKS - 1):
-            p1 = (chunk_x[i], smooth_y[i])
-            p2 = (chunk_x[i + 1], smooth_y[i + 1])
+            p1 = (CHUNK_X[i], smooth_y[i])
+            p2 = (CHUNK_X[i + 1], smooth_y[i + 1])
             self.moon.CreateEdgeFixture(vertices=[p1, p2], density=0, friction=0.1)
             self.sky_polys.append([p1, p2, (p2[0], H), (p1[0], H)])
 
@@ -240,17 +247,13 @@ class EvalLander(LunarLander):
         self.game_over = False
         self.prev_shaping = None
 
-        W = VIEWPORT_W / SCALE
-        H = VIEWPORT_H / SCALE
-
         # terrain
-        CHUNKS = 11
 
-        height = self.next_heights()
-        chunk_x = [W / (CHUNKS - 1) * i for i in range(CHUNKS)]
-        self.helipad_x1 = chunk_x[CHUNKS // 2 - 1]
-        self.helipad_x2 = chunk_x[CHUNKS // 2 + 1]
-        self.helipad_y = H / 4
+        height = self.np_random.uniform(0, H / 2, size=(CHUNKS + 1,))
+
+        self.helipad_x1 = HELIPAD_X1
+        self.helipad_x2 = HELIPAD_X2
+        self.helipad_y = HELIPAD_Y
         height[CHUNKS // 2 - 2] = self.helipad_y
         height[CHUNKS // 2 - 1] = self.helipad_y
         height[CHUNKS // 2 + 0] = self.helipad_y
@@ -266,8 +269,8 @@ class EvalLander(LunarLander):
         )
         self.sky_polys = []
         for i in range(CHUNKS - 1):
-            p1 = (chunk_x[i], smooth_y[i])
-            p2 = (chunk_x[i + 1], smooth_y[i + 1])
+            p1 = (CHUNK_X[i], smooth_y[i])
+            p2 = (CHUNK_X[i + 1], smooth_y[i + 1])
             self.moon.CreateEdgeFixture(vertices=[p1, p2], density=0, friction=0.1)
             self.sky_polys.append([p1, p2, (p2[0], H), (p1[0], H)])
 
