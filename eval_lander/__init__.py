@@ -30,7 +30,7 @@ from gym.envs.box2d.lunar_lander import (
 
 class FTLander(LunarLander):
 
-    def __init__(self, x: float, y: float, margin: float = 0.05,
+    def __init__(self, x: float, y: float, margin: float = 5.,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__x = x
@@ -38,8 +38,8 @@ class FTLander(LunarLander):
         self.__margin = margin
 
     def next_init(self):
-        return (np.random.uniform(self.__x*(1-self.__margin), self.__x*(1+self.__margin)),
-                np.random.uniform(self.__y*(1-self.__margin), self.__y*(1+self.__margin)),)
+        return (np.random.uniform(self.__x-self.__margin, self.__x+self.__margin),
+                np.random.uniform(self.__y-self.__margin, self.__y+self.__margin),)
 
     def reset(
         self,
